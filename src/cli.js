@@ -96,8 +96,21 @@ function bar(frac, width = 24) {
   return A.paint('█'.repeat(n), { fg: '#4fc4bf' }) + dim('░'.repeat(width - n));
 }
 
+/** medic in Spotlight and Launchpad: a little app in ~/Applications that opens the window (no administrator needed). */
+function spotlightApp() {
+  if (!MAC || process.env.MEDIC_NO_APP) return;
+  try {
+    const Mac = require('./macos')({ app: 'medic', label: 'dev.dpatel7.medic', home: Fix.home });
+    const plist = path.join(Mac.appsDir(), 'medic.app', 'Contents', 'Info.plist');
+    let same = false;
+    try { same = fs.readFileSync(plist, 'utf8').includes(`<key>CFBundleShortVersionString</key><string>${pkg.version}</string>`); } catch { /* not made yet */ }
+    if (!same) Mac.makeApp({ name: 'medic', id: 'dev.dpatel7.medic.app', args: ['app'], icon: path.join(__dirname, '..', 'assets', 'medic.icns'), script: SCRIPT, version: pkg.version });
+  } catch { /* only a shortcut: never stop the command for it */ }
+}
+
 async function main(argv) {
   const [cmd, ...rest] = argv;
+  if (!['uninstall', 'help', '--help', '-h', '--version', '-v', 'version', 'nudge', 'sample'].includes(cmd)) spotlightApp();
   if (!MAC && !process.env.MEDIC_FIXTURES && !['help', '--help', '-h', '--version', '-v', 'version'].includes(cmd)) {
     out('\n  medic checks Macs: it reads things only macOS has (the battery, heat, memory pressure).');
     out(dim('  On this computer, try roomy for disk space instead.\n'));
@@ -217,6 +230,7 @@ function update() {
   if (r.status !== 0) throw new Error('The update did not finish. Your current version still works.');
 }
 async function uninstall() {
+  if (MAC) require('./macos')({ app: 'medic', label: 'dev.dpatel7.medic', home: Fix.home }).removeApp('medic');
   Diary.off();
   const root = Fix.home();
   let launcher = '';
