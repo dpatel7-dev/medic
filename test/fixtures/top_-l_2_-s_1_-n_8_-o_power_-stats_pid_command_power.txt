@@ -1,0 +1,12 @@
+Processes: 512 total, 3 running, 509 sleeping, 2345 threads 
+PID    COMMAND          POWER
+0      kernel_task      0.0
+455    Google Chrome He 0.0
+
+Processes: 512 total, 3 running, 509 sleeping, 2345 threads 
+PID    COMMAND          POWER
+600    launcher         38.2
+455    Google Chrome He 22.5
+412    Google Chrome    6.1
+521    Code Helper (Ren 3.0
+101    WindowServer     2.2

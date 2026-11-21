@@ -1,0 +1,13 @@
+Power:
+
+    Battery Information:
+
+      Model Information:
+          Manufacturer: SMP
+          Device Name: bq40z651
+      Charge Information:
+          State of Charge (%): 74
+      Health Information:
+          Cycle Count: 412
+          Condition: Normal
+          Maximum Capacity: 86%

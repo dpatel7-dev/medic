@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>medic</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="medic.css">
+</head>
+<body>
+<canvas id="scene" aria-hidden="true"></canvas>
+
+<main class="glass wrap">
+  <header class="top">
+    <canvas id="lotl" width="12" height="9" aria-hidden="true"></canvas>
+    <h1>medic</h1>
+    <span class="mac" id="mac"></span>
+    <span class="sp"></span>
+    <button class="btn" id="again">Check again</button>
+  </header>
+
+  <p class="verdict loading" id="verdict" aria-live="polite">Taking a look at your Mac…</p>
+  <nav class="areas" id="areas" aria-label="How each part is doing"></nav>
+
+  <ul class="findings" id="findings" aria-label="What medic found"></ul>
+  <p class="goodies" id="goodies" hidden></p>
+
+  <h2>The details</h2>
+  <div class="grid">
+    <section class="card" id="cBattery"><h3>Battery <small id="battWhen"></small></h3><div id="battery"></div></section>
+    <section class="card" id="cMemory"><h3>Memory</h3><div id="memory"></div></section>
+    <section class="card"><h3>Working hardest <small>right now</small></h3><div class="rows" id="hogs"></div></section>
+    <section class="card"><h3>Storage</h3><div id="storage"></div></section>
+    <section class="card"><h3>Starts by itself <small id="startCount"></small></h3><div class="rows" id="startup"></div></section>
+    <section class="card"><h3>Internet</h3><div id="net"><p class="empty">Checking after the quick look…</p></div></section>
+    <section class="card"><h3>This Mac</h3><div id="sys"></div></section>
+    <section class="card"><h3>How it's been <small>one dot a day</small></h3><div id="history"></div></section>
+
+    <section class="card diary">
+      <h3>Battery diary
+        <span class="seg" id="range" role="group" aria-label="How far back"><button data-h="24" aria-pressed="true">24 hours</button><button data-h="72" aria-pressed="false">3 days</button><button data-h="168" aria-pressed="false">7 days</button></span>
+        <small><label style="display:inline-flex;gap:7px;align-items:center;cursor:pointer">Keep a diary <input type="checkbox" class="toggle" id="diaryOn"></label></small>
+      </h3>
+      <div class="split">
+        <div id="chart"></div>
+        <div id="diarySum"></div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="foot"><span id="took"></span><span class="sp"></span><span>medic only reads, unless you press a button. Nothing leaves this computer.</span></footer>
+</main>
+
+<dialog id="ask"><div class="glass">
+  <h3 id="askTitle"></h3>
+  <p id="askText"></p>
+  <div class="acts"><button class="btn quiet" id="askNo">Cancel</button><button class="btn main" id="askYes">Go ahead</button></div>
+</div></dialog>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script id="config" type="application/json">__CONFIG__</script>
+<script src="scene.js"></script>
+<script src="pond.js"></script>
+<script src="medic.js"></script>
+</body>
+</html>

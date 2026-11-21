@@ -1,0 +1,11 @@
+2026-11-21 10:14:02 -0500 
+Assertion status system-wide:
+   BackgroundTask                 0
+   PreventUserIdleDisplaySleep    1
+   PreventSystemSleep             0
+   UserIsActive                   1
+Listed by owning process:
+   pid 412(Google Chrome): [0x0001a6f50001902c] 00:12:31 PreventUserIdleDisplaySleep named: "Video Wake Lock"  
+   pid 165(WindowServer): [0x0001a6f60009902d] 00:00:00 UserIsActive named: "com.apple.iohideventsystem.queue.tickle serviceID:100000441"
+   pid 98(powerd): [0x0001a6f60009902e] 00:01:00 PreventUserIdleSystemSleep named: "Powerd - Prevent sleep while display is on"
+Kernel Assertions: 0x4=USB

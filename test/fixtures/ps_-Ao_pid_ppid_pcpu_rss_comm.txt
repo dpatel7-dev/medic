@@ -1,0 +1,14 @@
+  PID  PPID  %CPU    RSS COMM
+    1     0   0.3  15240 /sbin/launchd
+  101     1   4.1  98304 /System/Library/CoreServices/WindowServer
+  165     1   0.1  41000 /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder
+  412     1  12.0 812340 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+  455   412  88.5 1534567 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/131.0/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)
+  456   412  21.0 934567 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/131.0/Helpers/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer)
+  457   412   3.2 312345 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/131.0/Helpers/Google Chrome Helper (GPU).app/Contents/MacOS/Google Chrome Helper (GPU)
+  520     1   2.0 612345 /Applications/Visual Studio Code.app/Contents/MacOS/Electron
+  521   520   9.0 402345 /Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Renderer).app/Contents/MacOS/Code Helper (Renderer)
+  600     1  71.0 712000 /Applications/Minecraft.app/Contents/MacOS/launcher
+  700     1   0.5 210000 /Applications/Spotify.app/Contents/MacOS/Spotify
+  800     1   0.0 120000 /System/Applications/Messages.app/Contents/MacOS/Messages
+  900     1  14.0  80000 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
