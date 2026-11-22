@@ -10,10 +10,11 @@
 
 const fs = require('fs');
 const http = require('http');
+const Look = require('./look');
 const path = require('path');
 const crypto = require('crypto');
 
-const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json', '.ico': 'image/x-icon', '.jpg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp' };
+const TYPES = { '.mp3': 'audio/mpeg', '.m4a': 'audio/mp4', '.aac': 'audio/aac', '.wav': 'audio/wav', '.flac': 'audio/flac', '.ogg': 'audio/ogg', '.oga': 'audio/ogg', '.opus': 'audio/ogg', '.aiff': 'audio/aiff', '.aif': 'audio/aiff', '.mp4': 'audio/mp4', '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json', '.ico': 'image/x-icon', '.jpg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp' };
 
 /** A secret kept in a file (made once, readable by you only). */
 function secretIn(file) {
@@ -24,7 +25,7 @@ function secretIn(file) {
   return s;
 }
 
-function serve({ port = 0, secret, web, config = () => ({}), api, raw, onListen, header = 'x-app-secret' }) {
+function serve({ port = 0, secret, web, config = () => ({}), api, raw, outside, onListen, header = 'x-app-secret', referrer = 'no-referrer' }) {
   const base = `/${secret}`;
   const server = http.createServer(async (req, res) => {
     const addr = server.address();
@@ -33,12 +34,17 @@ function serve({ port = 0, secret, web, config = () => ({}), api, raw, onListen,
     const url = new URL(req.url, `http://${host}`);
     const send = (status, body, type = 'application/json') => {
       const data = Buffer.isBuffer(body) ? body : Buffer.from(typeof body === 'string' ? body : JSON.stringify(body));
-      res.writeHead(status, { 'content-type': type, 'content-length': data.length, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'referrer-policy': 'no-referrer' });
+      res.writeHead(status, { 'content-type': type, 'content-length': data.length, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'referrer-policy': referrer });
       res.end(data);
     };
     if (url.pathname === '/ping') return send(200, { ok: true });
+    // a few addresses outside the secret one, for helpers that pair first (they bring their own key)
+    if (outside) {
+      try { if (await outside(req, res, url, send)) return; } catch (e) { return send(e.status || 500, { error: e.message || 'Something went wrong.' }); }
+    }
     if (!url.pathname.startsWith(base + '/') && url.pathname !== base) return send(404, { error: 'not here' });
     const rest = url.pathname.slice(base.length) || '/';
+    if (rest === '/__look') return send(200, { look: Look.read() }); // light or dark, set in pca
     try {
       if (raw && (await raw(req, res, rest, url, send))) return;
       if (rest.startsWith('/api/')) {
@@ -59,7 +65,7 @@ function serve({ port = 0, secret, web, config = () => ({}), api, raw, onListen,
       let data = fs.readFileSync(full);
       if (full.endsWith('.html')) {
         const conf = JSON.stringify({ ...config(req, url), secret, base }).replace(/</g, '\\u003c');
-        data = Buffer.from(data.toString('utf8').replace('__CONFIG__', conf));
+        data = Buffer.from(Look.inject(data.toString('utf8').replace('__CONFIG__', conf), Look.read(), `${base}/__look`));
       }
       return send(200, data, TYPES[path.extname(full)] || 'application/octet-stream');
     } catch (e) {
