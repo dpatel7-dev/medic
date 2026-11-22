@@ -51,7 +51,7 @@
       g.clearRect(0, 0, S.W, S.H);
       var dt = last ? Math.min(0.1, (now - last) / 1000) : 0;
       last = now;
-      o.draw(g, S, calm ? 0 : (now - t0) / 1000, calm || now < hushUntil ? 0 : dt);
+      o.draw(g, S, calm ? 0 : Math.max(0, (now - t0) / 1000), calm || now < hushUntil ? 0 : dt);
     }
     function frame(now) {
       raf = requestAnimationFrame(frame);
